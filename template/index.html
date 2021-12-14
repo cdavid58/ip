@@ -7,27 +7,17 @@
 	</title>
 </head>
 <body>
-<h1>Hola mi hermosa</h1>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script>
-		var ip = '190.28.76.207';
-
-		var access_key = '3651469b09716db551e30e675216fa76';
-
-		// get the API result via jQuery.ajax
-
-		$.ajax({
-		    url: 'http://api.ipstack.com/' + ip + '?access_key=' + access_key,  
-		    dataType: 'jsonp',
-		    success: function(json) {
-		    	console.log(json);
-		        $.ajax({
-		        	url:'{% url "index" %}',
-		        	data:json
-		        });
-		    }
-		});
+	    $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(datas) {
+          // console.log(JSON.stringify(data, null, 2));
+          var obj = JSON.stringify(datas,null,2);
+          console.log(datas);
+          $.ajax({
+            url:'{% url "index" %}',
+            data: datas
+          });
+        });
 	</script>
-</body>
-</html>
+</body></html>
