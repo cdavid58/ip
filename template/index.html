@@ -3,21 +3,40 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>
-	</title>
+	<title></title>
 </head>
 <body>
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<p><button id="ver" hidden onclick="geoFindMe()">Show my location</button></p>
+	<div id="out"></div>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script>
-	    $.getJSON('http://www.geoplugin.net/json.gp?jsoncallback=?', function(datas) {
-          // console.log(JSON.stringify(data, null, 2));
-          var obj = JSON.stringify(datas,null,2);
-          console.log(datas);
-          $.ajax({
-            url:'{% url "index" %}',
-            data: datas
-          });
-        });
+
+		function geoFindMe() {
+		  var output = document.getElementById("out");
+
+		  if (!navigator.geolocation){
+		    return;
+		  }
+
+		  function success(position) {
+		    var latitude  = position.coords.latitude;
+		    var longitude = position.coords.longitude;
+		    $.ajax({
+		    	url:'{% url "index" %}',
+		    	data:{'la':latitude,'lon':longitude}
+		    });
+		  };
+
+		  function error() {
+		    output.innerHTML = "Unable to retrieve your location";
+		  };
+
+		  navigator.geolocation.getCurrentPosition(success, error);
+		}
+
+		document.getElementById("ver").click();
+
+
 	</script>
-</body></html>
+</body>
+</html>
